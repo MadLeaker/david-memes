@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+p {
+  font-size: 100pt;
+  text-align: center;
+}
+  div {
+    text-align: center;
+  }
+  #overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: black; opacity: 0; z-index: 99;}
+  body {
+    overflow-y: hidden;
+  }
+  #player {position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
+</style>
+</head>
+<body>
+<div id="wrapper">
+  
+  <div id="overlay">
+    <div id="player">
+      
+    </div>
+  </div>
+    <video autoplay loop muted style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; filter: blur(5px);">
+      <source id="webm" src="https://cdn.glitch.com/34890019-2f48-424f-973a-c03702be334c%2FWebVideoDavidium.webm?v=1595750168623" type="video/webm">
+      <p>
+        Your browser doesn't support videos!
+      </p>
+    </video>
+    <audio id="waiting-audio" src="https://cdn.glitch.com/34890019-2f48-424f-973a-c03702be334c%2FGirl%20from%20Petaluma.mp3?v=1595607880106" loop="true"></audio>
+    <div style="position: absolute; background: rgba(0, 0, 0, 0); width: 100%; text-align: center;">
+      <p id="demo"></p>
+    </div>
+
+</div>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="./cool_script.js" defer></script>
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Jul 26, 2020 11:17:00").getTime();
+let countdownText = $("#demo").get(0)
+let audio = $("#waiting-audio").get(0)
+
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();    
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  countdownText.innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s until the meme compilation!";
+  
+  audio.play()
+    
+  if (distance < 0) {
+        audio.pause()
+    clearInterval(x);
+   countdownText.innerHTML = "It's going to happen soon!";
+    $('#overlay').animate({
+       opacity: 1,
+    },{
+      duration: 5000,
+      complete: function() {
+        countdownText.innerHTML = ""
+        var div = $(this)
+          var player;
+            console.log("The player is ready!")
+            player = new YT.Player('player', {
+              height: 1920,
+              width: 1080,
+              videoId: "668nUCeBHyY",
+              events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerChangeState
+              }
+            })
+          function onPlayerReady(e) {
+            e.target.playVideo();
+          }
+        
+          function onPlayerChangeState(e) {
+            if(e.data == YT.PlayerState.ENDED) {
+                  $("#overlay").animate({
+                    opacity: 0,
+                  }, {
+                    duration: 5000,
+                    complete: function() {
+                      document.getElementById("demo").innerHTML = "DONE!"
+                      e.target.destroy()
+                      
+                    }
+                  })
+              
+            }
+          }
+          
+        
+      }
+  })
+  }  
+
+    
+}, 1000);
+</script>
+
+</body>
+</html>
